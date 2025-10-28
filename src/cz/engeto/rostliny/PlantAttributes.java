@@ -2,17 +2,18 @@ package cz.engeto.rostliny;
 import java.time.LocalDate;
 
 public class PlantAttributes {
-
+    //region Atributy
     private String name;
     private String notes;
     private LocalDate planted;
     private LocalDate lastWatering;
     private int frequencyOfWatering; //ve dnech
+    //endregion
 
     //region constructor
     public PlantAttributes(String name, String notes, LocalDate planted, LocalDate lastWatering, int frequencyOfWatering) {
         this.name = name;
-        this.notes = notes == null ? "Bez poznámky" : notes;
+        this.notes = notes;
         this.planted = planted;
         this.lastWatering = lastWatering;
         this.frequencyOfWatering = frequencyOfWatering;
@@ -54,7 +55,9 @@ public class PlantAttributes {
         return frequencyOfWatering;
     }
 
-    public void setFrequencyOfWatering(int frequencyOfWatering) {
+    public void setFrequencyOfWatering(int frequencyOfWatering) throws PlantException {
+        if (frequencyOfWatering <= 0)
+            throw new PlantException("Frekvence zalévání nesmí být menší nebo rovna nule!");
         this.frequencyOfWatering = frequencyOfWatering;
     }
 
@@ -62,7 +65,9 @@ public class PlantAttributes {
         return lastWatering;
     }
 
-    public void setLastWatering(LocalDate lastWatering) {
+    public void setLastWatering(LocalDate lastWatering) throws PlantException {
+        if (lastWatering.isBefore(planted))
+            throw new PlantException("Kytka nemůže být zalitá před zasazením!");
         this.lastWatering = lastWatering;
     }
     //endregion
