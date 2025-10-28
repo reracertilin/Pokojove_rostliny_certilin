@@ -1,7 +1,7 @@
-package cz.engeto.atributyRostlin;
+package cz.engeto.rostliny;
 import java.time.LocalDate;
 
-public class AtributyRostlin {
+public class PlantAttributes {
 
     private String name;
     private String notes;
@@ -10,17 +10,17 @@ public class AtributyRostlin {
     private int frequencyOfWatering; //ve dnech
 
     //region constructor
-    public AtributyRostlin(String name, String notes, LocalDate planted, LocalDate lastWatering, int frequencyOfWatering) {
+    public PlantAttributes(String name, String notes, LocalDate planted, LocalDate lastWatering, int frequencyOfWatering) {
         this.name = name;
-        this.notes = notes;
+        this.notes = notes == null ? "Bez poznámky" : notes;
         this.planted = planted;
         this.lastWatering = lastWatering;
         this.frequencyOfWatering = frequencyOfWatering;
     }
-    public AtributyRostlin(String name, int frequencyOfWatering) {
+    public PlantAttributes(String name, int frequencyOfWatering) {
         this (name, "Bez poznámky", LocalDate.now(), LocalDate.now(), frequencyOfWatering);
     }
-    public AtributyRostlin(String name) {
+    public PlantAttributes(String name) {
         this (name, "Bez poznámky", LocalDate.now(), LocalDate.now(), 7);
     }
     //endregion
@@ -67,6 +67,7 @@ public class AtributyRostlin {
     }
     //endregion
 
+    //region Metody
     public String getWateringInfo() {
         return
                 "jméno rostliny: " + name + "\n" +
@@ -75,4 +76,14 @@ public class AtributyRostlin {
                 "naposled zalitá: " + lastWatering + "\n" +
                 "frekvence zalévání: " + frequencyOfWatering ;
     }
+
+    public void doWateringNow() {
+        this.lastWatering = LocalDate.now();
+    }
+
+    @Override
+    public String toString() {
+        return getWateringInfo();
+    }
+    //endregion
 }
