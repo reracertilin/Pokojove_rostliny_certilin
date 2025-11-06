@@ -73,13 +73,18 @@ public class PlantAttributes {
     //endregion
 
     //region Metody
+    public LocalDate getNextWateringDate() {
+        return lastWatering.plusDays(frequencyOfWatering);
+    }
+
     public String getWateringInfo() {
         return
                 "jméno rostliny: " + name + "\n" +
                 "poznámka: " + notes + "\n" +
                 "zasazená: " + planted + "\n" +
                 "naposled zalitá: " + lastWatering + "\n" +
-                "frekvence zalévání: " + frequencyOfWatering ;
+                "frekvence zalévání: " + frequencyOfWatering + "\n" +
+                "další zálévání: " + getNextWateringDate();
     }
 
     public void doWateringNow() {
