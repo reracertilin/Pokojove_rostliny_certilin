@@ -81,9 +81,9 @@ public class PlantList {
                 // název \t poznámky \t zasazeno \t posledníZálivka \t frekvence
                 writer.write(plant.getName() + "\t" +
                         plant.getNotes() + "\t" +
+                        plant.getFrequencyOfWatering() + "\t" +
                         plant.getPlanted().toString() + "\t" +
-                        plant.getLastWatering().toString() + "\t" +
-                        plant.getFrequencyOfWatering() + "\n");
+                        plant.getLastWatering().toString() + "\n");
             }
         }
     }
@@ -108,9 +108,9 @@ public class PlantList {
                     // Parsování dat
                     String name = parts[0];
                     String notes = parts[1];
-                    LocalDate planted = LocalDate.parse(parts[2]);
+                    int frequency = Integer.parseInt(parts[2]);
                     LocalDate lastWatering = LocalDate.parse(parts[3]);
-                    int frequency = Integer.parseInt(parts[4]);
+                    LocalDate planted = LocalDate.parse(parts[4]);
 
                     PlantAttributes plant = new PlantAttributes(name, notes, planted, lastWatering, frequency);
                     loadedList.addPlant(plant);
