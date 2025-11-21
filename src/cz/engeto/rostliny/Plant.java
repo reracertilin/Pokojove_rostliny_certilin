@@ -1,7 +1,8 @@
 package cz.engeto.rostliny;
 import java.time.LocalDate;
 
-public class PlantAttributes {
+public class Plant implements Comparable<Plant> {
+
     //region Atributy
     private String name;
     private String notes;
@@ -11,17 +12,20 @@ public class PlantAttributes {
     //endregion
 
     //region constructor
-    public PlantAttributes(String name, String notes, LocalDate planted, LocalDate lastWatering, int frequencyOfWatering) {
+    public Plant(String name, String notes, LocalDate planted, LocalDate lastWatering, int frequencyOfWatering) {
+        if (name == null || name.isEmpty()) throw new PlantException("Jméno nesmí být prázdné");
+        if (frequencyOfWatering <= 0) throw new PlantException("Frekvence musí být kladná");
+        if (lastWatering.isBefore(planted)) throw new PlantException("Kytka nemůže být zalitá před zasazením");
         this.name = name;
         this.notes = notes;
         this.planted = planted;
         this.lastWatering = lastWatering;
         this.frequencyOfWatering = frequencyOfWatering;
     }
-    public PlantAttributes(String name, int frequencyOfWatering) {
+    public Plant(String name, int frequencyOfWatering) {
         this (name, "Bez poznámky", LocalDate.now(), LocalDate.now(), frequencyOfWatering);
     }
-    public PlantAttributes(String name) {
+    public Plant(String name) {
         this (name, "Bez poznámky", LocalDate.now(), LocalDate.now(), 7);
     }
     //endregion
@@ -57,7 +61,7 @@ public class PlantAttributes {
 
     public void setFrequencyOfWatering(int frequencyOfWatering) throws PlantException {
         if (frequencyOfWatering <= 0)
-            throw new PlantException("Frekvence zalévání nesmí být menší nebo rovna nule!");
+            throw new PlantException("Frekvence zalévání nesmí být menší nebo rovna nule");
         this.frequencyOfWatering = frequencyOfWatering;
     }
 
@@ -67,7 +71,7 @@ public class PlantAttributes {
 
     public void setLastWatering(LocalDate lastWatering) throws PlantException {
         if (lastWatering.isBefore(planted))
-            throw new PlantException("Kytka nemůže být zalitá před zasazením!");
+            throw new PlantException("Kytka nemůže být zalitá před zasazením");
         this.lastWatering = lastWatering;
     }
     //endregion
@@ -94,6 +98,10 @@ public class PlantAttributes {
     @Override
     public String toString() {
         return getWateringInfo();
+    }
+
+    public int compareTo(Plant other) {
+        return this.name.compareTo(other.name);
     }
     //endregion
 }

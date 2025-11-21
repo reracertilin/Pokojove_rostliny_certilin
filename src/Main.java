@@ -1,5 +1,5 @@
 
-import cz.engeto.rostliny.PlantAttributes;
+import cz.engeto.rostliny.Plant;
 import cz.engeto.rostliny.PlantList;
 import cz.engeto.rostliny.PlantException;
 
@@ -12,11 +12,25 @@ void main(String[] args) throws IOException {
         final String OUTPUT_FILE = RESOURCE_FOLDER + "kvetiny-zmeny.txt";
 
         // vadné soubory
-        PlantList.loadFromFile(RESOURCE_FOLDER + "kvetiny-spatne-datum.txt");
-        PlantList.loadFromFile(RESOURCE_FOLDER + "kvetiny-spatne-frekvence.txt");
-        PlantList plantList = new PlantList();
+        try {
+            System.out.println("Zkouším načíst soubor se špatným datem...");
+            PlantList.loadFromFile(RESOURCE_FOLDER + "kvetiny-spatne-datum.txt");
+        } catch (PlantException | IOException e) {
+            System.err.println("Došlo k očekávané chybě: " + e.getMessage());
+        }
 
         try {
+            System.out.println("\nZkouším načíst soubor se špatnou frekvencí...");
+            PlantList.loadFromFile(RESOURCE_FOLDER + "kvetiny-spatne-frekvence.txt");
+        } catch (PlantException | IOException e) {
+            System.err.println("Došlo k očekávané chybě: " + e.getMessage());
+        }
+
+        PlantList plantList = new PlantList();
+
+
+        try {
+
             // načtení seznamu květin ze souboru
             System.out.println("=============================================");
             System.out.println("NAČÍTÁNÍ ZE SOUBORU (" + INPUT_FILE + ")");
@@ -30,20 +44,20 @@ void main(String[] args) throws IOException {
             System.out.println("\n=============================================");
             System.out.println("VÝPIS INFORMACÍ O ZÁLÉVÁNÍ");
             System.out.println("=============================================");
-            for (PlantAttributes plant : plantList.getPlantListCopy()) {
+            for (Plant plant : plantList.getPlantListCopy()) {
                 System.out.println(plant.getWateringInfo());
                 System.out.println("---");
             }
 
             // přidání nové květiny do seznamu
-            PlantAttributes orchidej = new PlantAttributes("Orchidej Phalaenopsis", 10);
+            Plant orchidej = new Plant("Orchidej Phalaenopsis", 10);
             orchidej.setNotes("Zalévat jen po úplném vyschnutí.");
             plantList.addPlant(orchidej);
             System.out.println("\nPřidána nová rostlina: " + orchidej.getName());
 
             // přidání 10 tulipánů
             for (int i = 1; i <= 10; i++) {
-                PlantAttributes tulipan = new PlantAttributes("Tulipán na prodej " + i);
+                Plant tulipan = new Plant("Tulipán na prodej " + i);
                 tulipan.setFrequencyOfWatering(14); // Nastav frekvenci na 14 dnů
                 plantList.addPlant(tulipan);
             }
@@ -85,4 +99,5 @@ void main(String[] args) throws IOException {
         } catch (PlantException | IOException e) {
             System.err.println("\n FATÁLNÍ CHYBA V APLIKACI: " + e.getMessage());
         }
+
 }
